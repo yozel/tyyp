@@ -1,5 +1,6 @@
 import requests
 from scapy.all import sr1, IP, UDP, DNS, DNSQR
+from urllib.parse import urlparse
 
 DNS_SERVERS = {
     "ISP": {
@@ -34,8 +35,7 @@ class DNSChecker(object):
             raise e
 
     def check(self, url):
-        # TODO: Get actual domain
-        domain = url
+	domain = urlparse(url).hostname
         country = "TR"
         doh_r = self._doh_request(domain, dns_server=DNS_SERVERS['CLOUDFLARE']['doh'][0])
         assert doh_r['Status'] == 0, "Site does not exist"
